@@ -1655,8 +1655,14 @@ require.register("flowerpots/index.js", function(module, exports, require){
       var _this = this;
       this.path = [];
       this.el = dom("<div/>").addClass("FlowerPotContainer");
+      this.topPot = dom("<div />").addClass("TopPot").appendTo(this.el);
       this.selectedItems = dom("<div />").addClass("SelectedItems").appendTo(this.el);
       this.childrenItems = dom("<div />").addClass("ChildrenItems").appendTo(this.el);
+      this.topPot.on("click", function(event) {
+        _this.selectedItems.empty();
+        _this.setPath([0]);
+        return _this.emit("opened", _this.getParent());
+      });
       this.el.on("click", ".FlowerPot", function(event) {
         var hasChildren, index, itemEl, itemIndex, parent, path, _ref;
         itemEl = dom(event.toElement);

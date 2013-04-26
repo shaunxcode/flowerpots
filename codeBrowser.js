@@ -32,6 +32,10 @@
     return codeEditor.setValue((_ref = item.code) != null ? _ref : "");
   });
 
+  codeBrowser.on("opened", function() {
+    return codeEditor.setValue("");
+  });
+
   codeBrowser.el.appendTo(document.getElementById("MyFlowerPot"));
 
 }).call(this);

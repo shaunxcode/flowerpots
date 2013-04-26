@@ -18,6 +18,14 @@
   user-select: none
 }
 
+.FlowerPotContainer .TopPot {
+  background: #e7e7e7;
+  height: 12px;
+  cursor: pointer;
+  margin-bottom: 4px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5)
+}
+
 .FlowerPotContainer .FlowerPot {
   padding: 6px;
   cursor: pointer;
