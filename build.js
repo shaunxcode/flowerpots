@@ -1658,11 +1658,11 @@ require.register("flowerpots/index.js", function(module, exports, require){
       this.selectedItems = dom("<div />").addClass("SelectedItems").appendTo(this.el);
       this.childrenItems = dom("<div />").addClass("ChildrenItems").appendTo(this.el);
       this.el.on("click", ".FlowerPot", function(event) {
-        var hasChildren, index, itemEl, itemIndex, parent, path;
+        var hasChildren, index, itemEl, itemIndex, parent, path, _ref;
         itemEl = dom(event.toElement);
         itemIndex = parseInt(itemEl.attr("data-index"));
         parent = _this.getParent();
-        hasChildren = parent.children[itemIndex].children;
+        hasChildren = (((_ref = parent.children[itemIndex]) != null ? _ref.children : void 0) != null) || itemEl.attr("data-path");
         if (itemEl.hasClass("active")) {
           itemEl.remove();
           path = itemEl.attr("data-path");
@@ -1674,11 +1674,11 @@ require.register("flowerpots/index.js", function(module, exports, require){
             }
           });
           _this.setPath((function() {
-            var _i, _len, _ref, _results;
-            _ref = path.split(":");
+            var _i, _len, _ref1, _results;
+            _ref1 = path.split(":");
             _results = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              index = _ref[_i];
+            for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+              index = _ref1[_i];
               _results.push(parseInt(index));
             }
             return _results;
@@ -1692,7 +1692,6 @@ require.register("flowerpots/index.js", function(module, exports, require){
         } else if (!itemEl.hasClass("selected")) {
           _this.el.find(".selected").removeClass("selected");
           itemEl.addClass("selected");
-          itemEl.addClass(hasChildren ? "HasChildren" : "NoChildren");
           return _this.emit("selected", itemEl, parent.children[itemIndex]);
         }
       });
@@ -1737,7 +1736,7 @@ require.register("flowerpots/index.js", function(module, exports, require){
         _ref = parent.children;
         for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
           item = _ref[index];
-          this.childrenItems.append(child = dom("<div/>").addClass("FlowerPot").addClass("inactive").attr("data-index", index).text(item.name));
+          this.childrenItems.append(child = dom("<div/>").addClass("FlowerPot").addClass("inactive").addClass(item.children ? "HasChildren" : "NoChildren").attr("data-index", index).text(item.name));
           child.append(dom("<i />").text(">"));
         }
       }
