@@ -141,8 +141,11 @@ codeBrowser.setData [
 codeEditor = CodeMirror.fromTextArea document.getElementById("code"), 
 	lineNumbers: true 
 	lineWrapping: true 
-	
+
 codeBrowser.on "selected", (el, item) -> 
 	codeEditor.setValue item.code ? ""
+
+codeBrowser.on "opened", -> codeEditor.setValue ""
+
 
 codeBrowser.el.appendTo document.getElementById "MyFlowerPot"
