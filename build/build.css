@@ -1,0 +1,62 @@
+
+
+
+
+
+
+
+
+
+
+.FlowerPotContainer {
+  position: absolute;
+  float: left;
+  top: 0;
+  left: 0;
+  width: 200px;
+  padding: 5px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none
+}
+
+.FlowerPotContainer .FlowerPot {
+  padding: 6px;
+  cursor: pointer;
+  position: relative
+}
+
+.FlowerPotContainer .FlowerPot.active {
+  color: #969696;
+  text-shadow: 0px 1px 1px #ffffff;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+  margin: 0px 0px 4px 0px;
+  background-color: #f7f7f7
+}
+
+.FlowerPotContainer .FlowerPot.selected {
+  background: #5a92d3;
+  color: white
+}
+
+.FlowerPotContainer .FlowerPot.inactive {
+  padding-left: 15px
+}
+
+.FlowerPotContainer .FlowerPot.inactive:hover {
+  background-color: #aec9e5
+}
+
+.FlowerPotContainer .FlowerPot i {
+  display: none
+}
+
+.FlowerPotContainer .FlowerPot.selected.HasChildren i {
+  display: block;
+  position: absolute;
+  right: 6px;
+  top: 6px
+}
