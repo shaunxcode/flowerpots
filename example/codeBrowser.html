@@ -4,16 +4,29 @@
 <script src="build.js"></script>
 <link rel="stylesheet" href="build.css">
 <link rel="stylesheet" href="example.css">
+<link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css">
 </head>
 <body>
   <header>
     FlowerPots: CodeBrowser 
   </header>
   <div id="MyFlowerPot"></div>
-  <div id="code" class="contentPane"></div>
+  <textarea id="code" class="contentPane"></textarea>
 </body>
+<script src="http://codemirror.net/lib/codemirror.js"></script>
+<script src="http://codemirror.net/mode/coffeescript/coffeescript.js"></script>
 <script src="codeBrowser.js"></script>
 <style> 
 	body { text-transform: none; }
+	.CodeMirror {
+		line-height: 1.5em;
+		font-size: 110%;
+		height: auto;
+	}
+
+	.CodeMirror-scroll {
+		overflow-x: auto;
+		overflow-y: hidden;
+	} 
 </style>
 </html>

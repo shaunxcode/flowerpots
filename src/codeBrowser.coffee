@@ -1,6 +1,7 @@
 FlowerPots = require "flowerpots"
 
 item = (name, children) -> {name, children}
+method = (name, code) -> {name, code}
 
 codeBrowser = new FlowerPots 
 codeBrowser.setData [
@@ -9,8 +10,44 @@ codeBrowser.setData [
   item "Backbone", [
     item "Events", [
       item "Accessing", [
-          item "on" 
-          item "off"]
+          method "on", """
+(name, callback, context) ->
+  return this  if not eventsApi(this, "on", name, [callback, context]) or not callback
+  @_events or (@_events = {})
+  events = @_events[name] or (@_events[name] = [])
+  events.push
+    callback: callback
+    context: context
+    ctx: context or this
+
+  this
+"""
+          method "off", """
+(name, callback, context) ->
+  return this  if not @_events or not eventsApi(this, "off", name, [callback, context])
+  if not name and not callback and not context
+    @_events = {}
+    return this
+  names = (if name then [name] else _.keys(@_events))
+  i = 0
+  l = names.length
+
+  while i < l
+    name = names[i]
+    if events = @_events[name]
+      @_events[name] = retain = []
+      if callback or context
+        j = 0
+        k = events.length
+
+        while j < k
+          ev = events[j]
+          retain.push ev  if (callback and callback isnt ev.callback and callback isnt ev.callback._callback) or (context and context isnt ev.context)
+          j++
+      delete @_events[name]  unless retain.length
+    i++
+  this
+"""]
       item "Actions", [ 
           item "trigger"
           item "once"
@@ -100,5 +137,12 @@ codeBrowser.setData [
     	item "Actions", [
     		item "route"
     		item "navigate"]]]]
+
+codeEditor = CodeMirror.fromTextArea document.getElementById("code"), 
+	lineNumbers: true 
+	lineWrapping: true 
+	
+codeBrowser.on "selected", (el, item) -> 
+	codeEditor.setValue item.code ? ""
 
 codeBrowser.el.appendTo document.getElementById "MyFlowerPot"
