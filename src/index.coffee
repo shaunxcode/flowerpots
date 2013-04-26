@@ -1,4 +1,5 @@
 dom = require "dom"
+Emitter = require "emitter"
 
 class FlowerPots
 
@@ -20,7 +21,7 @@ class FlowerPots
 					ipath = dom(item).attr "data-path" 
 					if not ipath or ipath.length > path.length 
 						item.remove()
-						
+
 				@setPath (parseInt index for index in path.split ":")
 			else if parent.children[itemIndex].children
 				itemEl
@@ -30,8 +31,9 @@ class FlowerPots
 
 				@path.push itemIndex
 				@render()
-			else
+			else if not itemEl.hasClass "selected"
 				itemEl.addClass "selected"
+				@emit "selected", itemEl, parent.children[itemIndex]
 				
 	setPath: (@path) -> 
 		@render()
@@ -60,5 +62,5 @@ class FlowerPots
 					.addClass("inactive")
 					.attr("data-index", index)
 					.text(item.name)
-
+Emitter FlowerPots::
 module.exports = FlowerPots

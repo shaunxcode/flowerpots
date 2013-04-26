@@ -3,51 +3,17 @@
 </head>
 <script src="../build/build.js"></script>
 <link rel="stylesheet" href="../build/build.css">
+<link rel="stylesheet" href="example.css">
 </head>
 <body>
   <header>
     FlowerPots
   </header>
   <div id="MyFlowerPot"></div>
-  <div class="contentPane">
+  <div id="recipe" class="contentPane">
     Content
   </div>
 
 </body>
-<script>
-var FlowerPots = require("flowerpots");
-
-var myPots = new FlowerPots();
-myPots.setData([
-  {name: "fruits", children: [
-    {name: "berries", children: [
-      {name: "raspberry"},
-      {name: "blackberry"},
-      {name: "boisenberry", children:[
-        {name: "amazing pie"},
-        {name: "incredible jam"}]}]},
-    {name: "stone fruit", children: [
-      {name: "peach"},
-      {name: "apricot"},
-      {name: "plum"}]}]},
-  {name: "vegetables", children: [
-    {name: "zucchini", children: [
-      {name: "soups", children: [
-        {name: "vegetable stew"},
-        {name: "zucchini broth"}]},
-      {name: "breads", children:[
-        {name: "zucchini bread"},
-        {name: "banana bread"},
-        {name: "breakfast muffin"}]},
-      {name: "snacks"}]},
-    {name: "carrot"},
-    {name: "bok choy"}]},
-  {name: "grains", children: [
-    {name: "Quinoa"},
-    {name: "Wheat"},
-    {name: "Corn"}]}]);
-
-myPots.el.appendTo(document.getElementById("MyFlowerPot"));
-
-</script>
+<script src="example.js"></script>
 </html>
