@@ -5,40 +5,45 @@ class FlowerPots
 
 	constructor: -> 
 		@path = []
-		@el = dom "<div/>"
-		@el.addClass "FlowerPotContainer"
+		@el = dom("<div/>").addClass "FlowerPotContainer"
+		@selectedItems = dom("<div />").addClass("SelectedItems").appendTo @el 
+		@childrenItems = dom("<div />").addClass("ChildrenItems").appendTo @el 
+
 		@el.on "click", ".FlowerPot", (event) => 
 			itemEl = dom event.toElement
 			itemIndex = parseInt itemEl.attr "data-index"
 			parent = @getParent()
-
-			@el.find(".selected").removeClass "selected"
+			hasChildren = parent.children[itemIndex].children 
 
 			if itemEl.hasClass "active"
 				itemEl.remove()
 				path = itemEl.attr "data-path"
-				@el.find(".FlowerPot").forEach (item) -> 
+				@selectedItems.find(".FlowerPot").forEach (item) -> 
 					ipath = dom(item).attr "data-path" 
 					if not ipath or ipath.length > path.length 
 						item.remove()
 
 				@setPath (parseInt index for index in path.split ":")
-				@emit "groupSelected", @getParent()
-			else if parent.children[itemIndex].children
+				@emit "opened", @getParent()
+			else if hasChildren and itemEl.hasClass "selected"
 				itemEl
 					.removeClass("inactive")
+					.removeClass("selected")
 					.addClass("active")
 					.attr("data-path", @path.join ":")
+					.appendTo @selectedItems 
 
 				@path.push itemIndex
-				@render()
-				@emit "groupSelected", @getParent()
+				@renderChildren()
+				@emit "opened", @getParent()
 			else if not itemEl.hasClass "selected"
+				@el.find(".selected").removeClass "selected"
 				itemEl.addClass "selected"
+				itemEl.addClass if hasChildren then "HasChildren" else "NoChildren"
 				@emit "selected", itemEl, parent.children[itemIndex]
 				
 	setPath: (@path) -> 
-		@render()
+		@renderChildren()
 		this
 
 	setData: (children) ->
@@ -53,16 +58,21 @@ class FlowerPots
 		parent = parent.children[i] for i in @path 
 		parent 
 
-	render: -> 
+	renderChildren: -> 
 		parent = @getParent()
-			
+		@childrenItems.empty()
+
 		if parent.children 
-			@el.find(".inactive").remove()
 			for item, index in parent.children
-				@el.append dom("<div/>")
+				@childrenItems.append child = dom("<div/>")
 					.addClass("FlowerPot")
 					.addClass("inactive")
 					.attr("data-index", index)
-					.text(item.name)
+					.text(item.name) 
+
+				child.append dom("<i />").text ">"
+		
+		@emit "rendered"
+
 Emitter FlowerPots::
 module.exports = FlowerPots

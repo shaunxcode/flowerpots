@@ -33,8 +33,8 @@ myPots.setData [
     item "carrot"
     item "bok choy"]
   item "grains", [
-    item "Quinoa", [
-      item "Salads", [
+    item "quinoa", [
+      item "salads", [
         recipe "Tabouleh", 
           "1 1/2 cup uncooked red quinoa"
           "1 cucumber chopped"
@@ -44,8 +44,8 @@ myPots.setData [
           "1 tsp salt (add to taste)"
           "a bunch of parsley finely chopped"
           "2 tomatoes chopped"]]
-    item "Wheat"
-    item "Corn", [
+    item "wheat"
+    item "corn", [
       item "breads", [
         recipe "tortilla",
           "1 cup corn kernels"
@@ -55,17 +55,18 @@ myPots.setData [
           "fry in a pan"]]]]
 
 foods = 
-  Fruits: "fruits are delicious and should be eaten with wreckless abandon"
-  Vegetables: "you are going to be hard pressed to eat too many vegetables"
+  fruits: "fruits are delicious and should be eaten with wreckless abandon"
+  vegetables: "you are going to be hard pressed to eat too many vegetables"
+  grains: "seriously get with it. unprocessed grains are a great source of nutrition"
+  soups: "Who doesn't like soup? Are you kidding me?"
 
 myPots.on "selected", (el, item) ->
-  document.getElementById("recipe").innerHTML = if item.recipe 
-      item.recipe.join "<br />"
+  document.getElementById("recipe").innerHTML = if item.recipe?.length
+      "<h3>#{item.name}</h3><p>#{item.recipe.join "<br />"}</p>"
     else
-      "" 
-
-myPots.on "groupSelected", (group) -> 
-  document.getElementById("recipe").innerHTML = "<h3>#{group.name ? "food!"}</h3><p>#{foods[group.name] ? "yum"}</p>"
-
+      if item.children 
+        "<h3>#{item.name ? "food!"}</h3><p>#{foods[item.name] ? "yum"}</p>"
+      else
+        "no recipe"
 
 myPots.el.appendTo document.getElementById "MyFlowerPot"
