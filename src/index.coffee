@@ -6,8 +6,14 @@ class FlowerPots
 	constructor: -> 
 		@path = []
 		@el = dom("<div/>").addClass "FlowerPotContainer"
+		@topPot = dom("<div />").addClass("TopPot").appendTo @el
 		@selectedItems = dom("<div />").addClass("SelectedItems").appendTo @el 
 		@childrenItems = dom("<div />").addClass("ChildrenItems").appendTo @el 
+
+		@topPot.on "click", (event) => 
+			@selectedItems.empty()
+			@setPath [0]
+			@emit "opened", @getParent()
 
 		@el.on "click", ".FlowerPot", (event) => 
 			itemEl = dom event.toElement
