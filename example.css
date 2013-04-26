@@ -1,0 +1,46 @@
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.clearfix:after {
+  clear: both;
+}
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  text-transform: capitalize;
+  margin: 0;
+}
+header {
+  height: 40px;
+  background-color: #e7e7e7;
+  padding: 10px 0px 0px 10px;
+  font-size: 20px;
+}
+#MyFlowerPot {
+  *zoom: 1;
+  position: relative;
+}
+#MyFlowerPot:before,
+#MyFlowerPot:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+#MyFlowerPot:after {
+  clear: both;
+}
+.contentPane {
+  float: left;
+  margin-left: 220px;
+  padding-top: 10px;
+  width: 80%;
+}
+h3 {
+  margin-top: 0;
+}
