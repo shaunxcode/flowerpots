@@ -25,6 +25,8 @@ header {
 #MyFlowerPot {
   *zoom: 1;
   position: relative;
+  width: 200px;
+  float: left;
 }
 #MyFlowerPot:before,
 #MyFlowerPot:after {
@@ -36,7 +38,6 @@ header {
   clear: both;
 }
 .contentPane {
-  float: left;
   margin-left: 220px;
   padding-top: 10px;
   width: 80%;

@@ -9,11 +9,6 @@
 
 
 .FlowerPotContainer {
-  position: absolute;
-  float: left;
-  top: 0;
-  left: 0;
-  width: 200px;
   padding: 5px;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
