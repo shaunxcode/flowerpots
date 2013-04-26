@@ -33,7 +33,17 @@ myPots.setData [
     item "carrot"
     item "bok choy"]
   item "grains", [
-    item "Quinoa"
+    item "Quinoa", [
+      item "Salads", [
+        recipe "Tabouleh", 
+          "1 1/2 cup uncooked red quinoa"
+          "1 cucumber chopped"
+          "1 red onion chopped"
+          "green onions"
+          "2 teaspoons lemon juice"
+          "1 tsp salt (add to taste)"
+          "a bunch of parsley finely chopped"
+          "2 tomatoes chopped"]]
     item "Wheat"
     item "Corn", [
       item "breads", [
@@ -44,7 +54,18 @@ myPots.setData [
           "grind the corn into the couch with heals of boots"
           "fry in a pan"]]]]
 
+foods = 
+  Fruits: "fruits are delicious and should be eaten with wreckless abandon"
+  Vegetables: "you are going to be hard pressed to eat too many vegetables"
+
 myPots.on "selected", (el, item) ->
-  document.getElementById("recipe").innerHTML = item.recipe ? "" 
+  document.getElementById("recipe").innerHTML = if item.recipe 
+      item.recipe.join "<br />"
+    else
+      "" 
+
+myPots.on "groupSelected", (group) -> 
+  document.getElementById("recipe").innerHTML = "<h3>#{group.name ? "food!"}</h3><p>#{foods[group.name] ? "yum"}</p>"
+
 
 myPots.el.appendTo document.getElementById "MyFlowerPot"

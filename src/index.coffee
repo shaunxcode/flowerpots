@@ -23,6 +23,7 @@ class FlowerPots
 						item.remove()
 
 				@setPath (parseInt index for index in path.split ":")
+				@emit "groupSelected", @getParent()
 			else if parent.children[itemIndex].children
 				itemEl
 					.removeClass("inactive")
@@ -31,6 +32,7 @@ class FlowerPots
 
 				@path.push itemIndex
 				@render()
+				@emit "groupSelected", @getParent()
 			else if not itemEl.hasClass "selected"
 				itemEl.addClass "selected"
 				@emit "selected", itemEl, parent.children[itemIndex]
