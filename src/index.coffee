@@ -13,7 +13,7 @@ class FlowerPots
 			itemEl = dom event.toElement
 			itemIndex = parseInt itemEl.attr "data-index"
 			parent = @getParent()
-			hasChildren = parent.children[itemIndex].children 
+			hasChildren = parent.children[itemIndex]?.children? or itemEl.attr("data-path")
 
 			if itemEl.hasClass "active"
 				itemEl.remove()

@@ -20,7 +20,16 @@ myPots.setData [
   item "vegetables", [
     item "zucchini", [
       item "soups", [
-        item "vegetable stew"
+        item "vegetable stew", [
+          item "winter stew", [
+            recipe "heart warming stew of life", 
+              "take 3 cups of love", 
+              "mix in 2 sprigs of despair"]
+          item "spring stew", [
+            recipe "magic elixir", 
+              "fetch beans from giant"
+              "read book on how to be invisible"
+              "you got yourself a stew going"]]
         item "zucchini broth"]
       item "breads", [
         recipe "zucchini bread", "mix zucchini into a bread recipe..."
