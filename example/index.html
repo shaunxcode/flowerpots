@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+</head>
+<script src="../build/build.js"></script>
+<link rel="stylesheet" href="../build/build.css">
+</head>
+<body>
+  <div id="MyFlowerPot"></div>
+</body>
+<style>
+  #MyFlowerPot{
+    width: 200px; 
+  }
+</style>
+<script>
+var FlowerPots = require("flowerpots");
+
+var myPots = new FlowerPots();
+myPots.setData([
+  {name: "fruits", children: [
+    {name: "berries", children: [
+      {name: "raspberry"},
+      {name: "blackberry"},
+      {name: "boisenberry", children:[
+        {name: "amazing pie"},
+        {name: "incredible jam"}]}]},
+    {name: "stone fruit", children: [
+      {name: "peach"},
+      {name: "apricot"},
+      {name: "plum"}]}]},
+  {name: "vegetables", children: [
+    {name: "zucchini", children: [
+      {name: "soups", children: [
+        {name: "vegetable stew"},
+        {name: "zucchini broth"}]}, 
+      {name: "breads", children:[
+        {name: "zucchini bread"},
+        {name: "banana bread"},
+        {name: "breakfast muffin"}]}, 
+      {name: "snacks"}]},
+    {name: "carrot"},
+    {name: "bok choy"}]},
+  {name: "grains", children: [
+    {name: "Quinoa"},
+    {name: "Wheat"},
+    {name: "Corn"}]}]);
+
+myPots.el.appendTo(document.getElementById("MyFlowerPot"));
+
+</script>
+</html>
