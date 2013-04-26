@@ -39,7 +39,6 @@ class FlowerPots
 			else if not itemEl.hasClass "selected"
 				@el.find(".selected").removeClass "selected"
 				itemEl.addClass "selected"
-				itemEl.addClass if hasChildren then "HasChildren" else "NoChildren"
 				@emit "selected", itemEl, parent.children[itemIndex]
 				
 	setPath: (@path) -> 
@@ -67,6 +66,7 @@ class FlowerPots
 				@childrenItems.append child = dom("<div/>")
 					.addClass("FlowerPot")
 					.addClass("inactive")
+					.addClass(if item.children then "HasChildren" else "NoChildren")
 					.attr("data-index", index)
 					.text(item.name) 
 
