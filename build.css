@@ -58,8 +58,13 @@
 }
 
 .FlowerPotContainer .FlowerPot.selected.HasChildren i {
+  background-image: url("/flowerpots/img/has-children.png");
   display: block;
   position: absolute;
   right: 6px;
   top: 6px
+}
+
+.FlowerPotContainer .ChildrenItems {
+  border-left: 3px solid #e6e6e6
 }
