@@ -1,8 +1,39 @@
 // Flower Pots Less
 // Version .1
+body {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	text-transform: capitalize;
+	margin: 0;
+}
+
+
+.clearfix {
+  *zoom: 1;
+  &:before,
+  &:after {
+    display: table;
+    content: "";
+    // Fixes Opera/contenteditable bug:
+    // http://nicolasgallagher.com/micro-clearfix-hack/#comment-36952
+    line-height: 0;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+
+#MyFlowerPot {
+	.clearfix;
+}
 
 .FlowerPotContainer {
-	border: 1px solid #333;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 200px;
+	//border: 1px solid hsl(0, 0%, 75%);
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -11,15 +42,38 @@
 	user-select: none;
 
 	.FlowerPot {
-		padding: 5px;
+		padding: 6px;
 		cursor: pointer;
+		&.active {
+			//background: #f2f2f2; /* Old browsers */
+			//background: -moz-linear-gradient(top,  #f2f2f2 0%, #e2e2e2 100%); /* FF3.6+ */
+			//background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f2f2f2), color-stop(100%,#e2e2e2)); /* Chrome,Safari4+ */
+			//background: -webkit-linear-gradient(top,  #f2f2f2 0%,#e2e2e2 100%); /* Chrome10+,Safari5.1+ */
+			//background: -o-linear-gradient(top,  #f2f2f2 0%,#e2e2e2 100%); /* Opera 11.10+ */
+			//background: -ms-linear-gradient(top,  #f2f2f2 0%,#e2e2e2 100%); /* IE10+ */
+			//background: linear-gradient(to bottom,  #f2f2f2 0%,#e2e2e2 100%); /* W3C */
+			//filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f2f2', endColorstr='#e2e2e2',GradientType=0 ); /* IE6-9 */
+			color: hsl(0,0%,59%);
+			text-shadow:0px 1px 1px hsla(0,0%,100%,1.0);
+			box-shadow: 0px 1px 1px hsla(0, 0%, 0%, 0.5);
+			margin: 0px 0px 4px 0px;
+			background-color: #f7f7f7
+		}
+		&.selected {
+			background: hsl(212, 58%, 59%);
+			color: white;
+		}
+		&.inactive {
+			padding-left: 15px;
+			&:hover {
+				background-color: hsl(211, 52%, 79%);
+			}
+		}
 	}
-	.FlowerPot.active {
-		background: #ccc;
-		border-bottom: 1px solid #333;
-	}
-	.FlowerPot.selected {
-		background: blue;
-		color: white;
-	}
+}
+
+
+.contentPane {
+	float: left;
+	margin-left: 210px;
 }

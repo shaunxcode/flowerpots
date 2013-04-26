@@ -6,12 +6,11 @@
 </head>
 <body>
   <div id="MyFlowerPot"></div>
+  <div class="contentPane">
+    Content
+  </div>
+
 </body>
-<style>
-  #MyFlowerPot{
-    width: 200px; 
-  }
-</style>
 <script>
 var FlowerPots = require("flowerpots");
 
@@ -32,11 +31,11 @@ myPots.setData([
     {name: "zucchini", children: [
       {name: "soups", children: [
         {name: "vegetable stew"},
-        {name: "zucchini broth"}]}, 
+        {name: "zucchini broth"}]},
       {name: "breads", children:[
         {name: "zucchini bread"},
         {name: "banana bread"},
-        {name: "breakfast muffin"}]}, 
+        {name: "breakfast muffin"}]},
       {name: "snacks"}]},
     {name: "carrot"},
     {name: "bok choy"}]},
