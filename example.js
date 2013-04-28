@@ -7,6 +7,8 @@
 
   myPots = new FlowerPots;
 
+  myPots.setRootLabel("Recipes");
+
   item = function(name, children) {
     return {
       name: name,

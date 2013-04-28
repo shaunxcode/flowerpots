@@ -1723,6 +1723,12 @@ require.register("flowerpots/index.js", function(exports, require, module){
       });
     }
 
+    FlowerPots.prototype.setRootLabel = function(rootLabel) {
+      this.rootLabel = rootLabel;
+      this.topPot.text(this.rootLabel);
+      return this;
+    };
+
     FlowerPots.prototype.setPath = function(path) {
       this.path = path;
       this.renderChildren();
