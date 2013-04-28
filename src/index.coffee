@@ -15,18 +15,20 @@ class FlowerPots
 			@setPath [0]
 			@emit "opened", @getParent()
 
-		@el.on "click", ".FlowerPot", (event) => 
-			itemEl = dom event.toElement
+		@el.on "click", ".FlowerPot", (event) =>
+			console.log event
+			itemEl = dom event.target
 			itemIndex = parseInt itemEl.attr "data-index"
 			parent = @getParent()
 			hasChildren = parent.children[itemIndex]?.children? or itemEl.attr("data-path")
 
 			if itemEl.hasClass "active"
 				path = itemEl.attr "data-path"
-				@selectedItems.find(".FlowerPot").forEach (item) -> 
-					ipath = dom(item).attr "data-path" 
+				@selectedItems.find(".FlowerPot").forEach (item) ->
+					subEl = dom item 
+					ipath = subEl.attr "data-path" 
 					if not ipath or ipath.length > path.length 
-						item.remove()
+						subEl.remove()
 
 				@setPath (parseInt index for index in path.split ":")
 				@emit "opened", @getParent()
