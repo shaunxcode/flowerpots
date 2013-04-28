@@ -1682,18 +1682,20 @@ require.register("flowerpots/index.js", function(exports, require, module){
       this.el.on("click", ".FlowerPot", function(event) {
         var hasChildren, index, itemEl, itemIndex, parent, path, _ref;
 
-        itemEl = dom(event.toElement);
+        console.log(event);
+        itemEl = dom(event.target);
         itemIndex = parseInt(itemEl.attr("data-index"));
         parent = _this.getParent();
         hasChildren = (((_ref = parent.children[itemIndex]) != null ? _ref.children : void 0) != null) || itemEl.attr("data-path");
         if (itemEl.hasClass("active")) {
           path = itemEl.attr("data-path");
           _this.selectedItems.find(".FlowerPot").forEach(function(item) {
-            var ipath;
+            var ipath, subEl;
 
-            ipath = dom(item).attr("data-path");
+            subEl = dom(item);
+            ipath = subEl.attr("data-path");
             if (!ipath || ipath.length > path.length) {
-              return item.remove();
+              return subEl.remove();
             }
           });
           _this.setPath((function() {
