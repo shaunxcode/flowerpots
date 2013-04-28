@@ -6,4 +6,4 @@ coffee -o ./ -c src/index.coffee
 component install
 component build
 rsync -r -L build/* ./example
-
+coffee stylehack.coffee

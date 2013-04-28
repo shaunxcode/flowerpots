@@ -22,7 +22,6 @@ class FlowerPots
 			hasChildren = parent.children[itemIndex]?.children? or itemEl.attr("data-path")
 
 			if itemEl.hasClass "active"
-				itemEl.remove()
 				path = itemEl.attr "data-path"
 				@selectedItems.find(".FlowerPot").forEach (item) -> 
 					ipath = dom(item).attr "data-path" 
@@ -32,6 +31,7 @@ class FlowerPots
 				@setPath (parseInt index for index in path.split ":")
 				@emit "opened", @getParent()
 			else if hasChildren and itemEl.hasClass "selected"
+				@path.push itemIndex
 				itemEl
 					.removeClass("inactive")
 					.removeClass("selected")
@@ -39,7 +39,6 @@ class FlowerPots
 					.attr("data-path", @path.join ":")
 					.appendTo @selectedItems 
 
-				@path.push itemIndex
 				@renderChildren()
 				@emit "opened", @getParent()
 			else if not itemEl.hasClass "selected"
