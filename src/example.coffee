@@ -1,6 +1,7 @@
 FlowerPots = require "flowerpots"
 
 myPots = new FlowerPots
+myPots.setRootLabel "Recipes"
 
 item = (name, children) -> {name, children}
 recipe = (name, recipe...) -> {name, recipe}

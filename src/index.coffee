@@ -47,6 +47,10 @@ class FlowerPots
 				@el.find(".selected").removeClass "selected"
 				itemEl.addClass "selected"
 				@emit "selected", itemEl, parent.children[itemIndex]
+
+	setRootLabel: (@rootLabel) -> 
+		@topPot.text @rootLabel
+		this
 				
 	setPath: (@path) -> 
 		@renderChildren()
