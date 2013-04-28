@@ -1,3 +1,4 @@
+
 /**
  * Require the given path.
  *
@@ -6,27 +7,32 @@
  * @api public
  */
 
-function require(p, parent, orig){
-  var path = require.resolve(p)
-    , mod = require.modules[path];
+function require(path, parent, orig) {
+  var resolved = require.resolve(path);
 
   // lookup failed
-  if (null == path) {
-    orig = orig || p;
+  if (null == resolved) {
+    orig = orig || path;
     parent = parent || 'root';
-    throw new Error('failed to require "' + orig + '" from "' + parent + '"');
+    var err = new Error('Failed to require "' + orig + '" from "' + parent + '"');
+    err.path = orig;
+    err.parent = parent;
+    err.require = true;
+    throw err;
   }
+
+  var module = require.modules[resolved];
 
   // perform real require()
   // by invoking the module's
   // registered function
-  if (!mod.exports) {
-    mod.exports = {};
-    mod.client = mod.component = true;
-    mod.call(this, mod, mod.exports, require.relative(path));
+  if (!module.exports) {
+    module.exports = {};
+    module.client = module.component = true;
+    module.call(this, module.exports, require.relative(resolved), module);
   }
 
-  return mod.exports;
+  return module.exports;
 }
 
 /**
@@ -55,19 +61,26 @@ require.aliases = {};
  * @api private
  */
 
-require.resolve = function(path){
-  var orig = path
-    , reg = path + '.js'
-    , regJSON = path + '.json'
-    , index = path + '/index.js'
-    , indexJSON = path + '/index.json';
+require.resolve = function(path) {
+  if (path.charAt(0) === '/') path = path.slice(1);
+  var index = path + '/index.js';
 
-  return require.modules[reg] && reg
-    || require.modules[regJSON] && regJSON
-    || require.modules[index] && index
-    || require.modules[indexJSON] && indexJSON
-    || require.modules[orig] && orig
-    || require.aliases[index];
+  var paths = [
+    path,
+    path + '.js',
+    path + '.json',
+    path + '/index.js',
+    path + '/index.json'
+  ];
+
+  for (var i = 0; i < paths.length; i++) {
+    var path = paths[i];
+    if (require.modules.hasOwnProperty(path)) return path;
+  }
+
+  if (require.aliases.hasOwnProperty(index)) {
+    return require.aliases[index];
+  }
 };
 
 /**
@@ -99,15 +112,15 @@ require.normalize = function(curr, path) {
 };
 
 /**
- * Register module at `path` with callback `fn`.
+ * Register module at `path` with callback `definition`.
  *
  * @param {String} path
- * @param {Function} fn
+ * @param {Function} definition
  * @api private
  */
 
-require.register = function(path, fn){
-  require.modules[path] = fn;
+require.register = function(path, definition) {
+  require.modules[path] = definition;
 };
 
 /**
@@ -118,9 +131,10 @@ require.register = function(path, fn){
  * @api private
  */
 
-require.alias = function(from, to){
-  var fn = require.modules[from];
-  if (!fn) throw new Error('failed to alias "' + from + '", it does not exist');
+require.alias = function(from, to) {
+  if (!require.modules.hasOwnProperty(from)) {
+    throw new Error('Failed to alias "' + from + '", it does not exist');
+  }
   require.aliases[to] = from;
 };
 
@@ -139,7 +153,7 @@ require.relative = function(parent) {
    * lastIndexOf helper.
    */
 
-  function lastIndexOf(arr, obj){
+  function lastIndexOf(arr, obj) {
     var i = arr.length;
     while (i--) {
       if (arr[i] === obj) return i;
@@ -151,40 +165,41 @@ require.relative = function(parent) {
    * The relative require() itself.
    */
 
-  function fn(path){
-    var orig = path;
-    path = fn.resolve(path);
-    return require(path, parent, orig);
+  function localRequire(path) {
+    var resolved = localRequire.resolve(path);
+    return require(resolved, parent, path);
   }
 
   /**
    * Resolve relative to the parent.
    */
 
-  fn.resolve = function(path){
+  localRequire.resolve = function(path) {
+    var c = path.charAt(0);
+    if ('/' == c) return path.slice(1);
+    if ('.' == c) return require.normalize(p, path);
+
     // resolve deps by returning
     // the dep in the nearest "deps"
     // directory
-    if ('.' != path.charAt(0)) {
-      var segs = parent.split('/');
-      var i = lastIndexOf(segs, 'deps') + 1;
-      if (!i) i = 0;
-      path = segs.slice(0, i + 1).join('/') + '/deps/' + path;
-      return path;
-    }
-    return require.normalize(p, path);
+    var segs = parent.split('/');
+    var i = lastIndexOf(segs, 'deps') + 1;
+    if (!i) i = 0;
+    path = segs.slice(0, i + 1).join('/') + '/deps/' + path;
+    return path;
   };
 
   /**
    * Check if module is defined at `path`.
    */
 
-  fn.exists = function(path){
-    return !! require.modules[fn.resolve(path)];
+  localRequire.exists = function(path) {
+    return require.modules.hasOwnProperty(localRequire.resolve(path));
   };
 
-  return fn;
-};require.register("component-indexof/index.js", function(module, exports, require){
+  return localRequire;
+};
+require.register("component-indexof/index.js", function(exports, require, module){
 
 var indexOf = [].indexOf;
 
@@ -196,7 +211,7 @@ module.exports = function(arr, obj){
   return -1;
 };
 });
-require.register("component-emitter/index.js", function(module, exports, require){
+require.register("component-emitter/index.js", function(exports, require, module){
 
 /**
  * Module dependencies.
@@ -361,7 +376,7 @@ Emitter.prototype.hasListeners = function(event){
 };
 
 });
-require.register("component-type/index.js", function(module, exports, require){
+require.register("component-type/index.js", function(exports, require, module){
 
 /**
  * toString ref.
@@ -396,7 +411,7 @@ module.exports = function(val){
 };
 
 });
-require.register("component-event/index.js", function(module, exports, require){
+require.register("component-event/index.js", function(exports, require, module){
 
 /**
  * Bind `el` event `type` to `fn`.
@@ -439,7 +454,7 @@ exports.unbind = function(el, type, fn, capture){
 };
 
 });
-require.register("component-matches-selector/index.js", function(module, exports, require){
+require.register("component-matches-selector/index.js", function(exports, require, module){
 /**
  * Module dependencies.
  */
@@ -487,7 +502,7 @@ function match(el, selector) {
 }
 
 });
-require.register("component-delegate/index.js", function(module, exports, require){
+require.register("component-delegate/index.js", function(exports, require, module){
 
 /**
  * Module dependencies.
@@ -531,7 +546,7 @@ exports.unbind = function(el, type, fn, capture){
 };
 
 });
-require.register("component-domify/index.js", function(module, exports, require){
+require.register("component-domify/index.js", function(exports, require, module){
 
 /**
  * Expose `parse`.
@@ -613,7 +628,7 @@ function orphan(els) {
 }
 
 });
-require.register("component-classes/index.js", function(module, exports, require){
+require.register("component-classes/index.js", function(exports, require, module){
 
 /**
  * Module dependencies.
@@ -780,7 +795,7 @@ ClassList.prototype.contains = function(name){
 };
 
 });
-require.register("component-css/index.js", function(module, exports, require){
+require.register("component-css/index.js", function(exports, require, module){
 
 /**
  * Properties to ignore appending "px".
@@ -817,7 +832,7 @@ module.exports = function(el, obj){
 };
 
 });
-require.register("component-sort/index.js", function(module, exports, require){
+require.register("component-sort/index.js", function(exports, require, module){
 
 /**
  * Expose `sort`.
@@ -863,7 +878,7 @@ exports.desc = function(el, fn){
 exports.asc = sort;
 
 });
-require.register("component-value/index.js", function(module, exports, require){
+require.register("component-value/index.js", function(exports, require, module){
 
 /**
  * Set or get `el`'s' value.
@@ -928,7 +943,7 @@ function type(el) {
 }
 
 });
-require.register("component-query/index.js", function(module, exports, require){
+require.register("component-query/index.js", function(exports, require, module){
 
 function one(selector, el) {
   return el.querySelector(selector);
@@ -952,7 +967,7 @@ exports.engine = function(obj){
 };
 
 });
-require.register("component-dom/index.js", function(module, exports, require){
+require.register("component-dom/index.js", function(exports, require, module){
 /**
  * Module dependencies.
  */
@@ -1640,7 +1655,8 @@ attrs.forEach(function(name){
 
 
 });
-require.register("flowerpots/index.js", function(module, exports, require){
+
+require.register("flowerpots/index.js", function(exports, require, module){
 // Generated by CoffeeScript 1.6.2
 (function() {
   var Emitter, FlowerPots, dom;
@@ -1671,7 +1687,6 @@ require.register("flowerpots/index.js", function(module, exports, require){
         parent = _this.getParent();
         hasChildren = (((_ref = parent.children[itemIndex]) != null ? _ref.children : void 0) != null) || itemEl.attr("data-path");
         if (itemEl.hasClass("active")) {
-          itemEl.remove();
           path = itemEl.attr("data-path");
           _this.selectedItems.find(".FlowerPot").forEach(function(item) {
             var ipath;
@@ -1694,8 +1709,8 @@ require.register("flowerpots/index.js", function(module, exports, require){
           })());
           return _this.emit("opened", _this.getParent());
         } else if (hasChildren && itemEl.hasClass("selected")) {
-          itemEl.removeClass("inactive").removeClass("selected").addClass("active").attr("data-path", _this.path.join(":")).appendTo(_this.selectedItems);
           _this.path.push(itemIndex);
+          itemEl.removeClass("inactive").removeClass("selected").addClass("active").attr("data-path", _this.path.join(":")).appendTo(_this.selectedItems);
           _this.renderChildren();
           return _this.emit("opened", _this.getParent());
         } else if (!itemEl.hasClass("selected")) {
@@ -1748,7 +1763,7 @@ require.register("flowerpots/index.js", function(module, exports, require){
         for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
           item = _ref[index];
           this.childrenItems.append(child = dom("<div/>").addClass("FlowerPot").addClass("inactive").addClass(item.children ? "HasChildren" : "NoChildren").attr("data-index", index).text(item.name));
-          child.append(dom("<i />").text(">"));
+          child.append(dom("<i />").addClass("icon-list-ul"));
         }
       }
       return this.emit("rendered");
@@ -1766,9 +1781,11 @@ require.register("flowerpots/index.js", function(module, exports, require){
 
 });
 require.alias("component-emitter/index.js", "flowerpots/deps/emitter/index.js");
+require.alias("component-emitter/index.js", "emitter/index.js");
 require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
 
 require.alias("component-dom/index.js", "flowerpots/deps/dom/index.js");
+require.alias("component-dom/index.js", "dom/index.js");
 require.alias("component-type/index.js", "component-dom/deps/type/index.js");
 
 require.alias("component-event/index.js", "component-dom/deps/event/index.js");
@@ -1792,5 +1809,8 @@ require.alias("component-sort/index.js", "component-dom/deps/sort/index.js");
 
 require.alias("component-value/index.js", "component-dom/deps/value/index.js");
 require.alias("component-value/index.js", "component-dom/deps/value/index.js");
+require.alias("component-value/index.js", "component-value/index.js");
 
 require.alias("component-query/index.js", "component-dom/deps/query/index.js");
+
+
