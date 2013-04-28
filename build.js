@@ -1679,49 +1679,55 @@ require.register("flowerpots/index.js", function(exports, require, module){
         _this.setPath([0]);
         return _this.emit("opened", _this.getParent());
       });
+      this.el.on("click", ".FlowerPot > i", function(event) {
+        return _this._handleClick(event.target.parentNode);
+      });
       this.el.on("click", ".FlowerPot", function(event) {
-        var hasChildren, index, itemEl, itemIndex, parent, path, _ref;
-
-        console.log(event);
-        itemEl = dom(event.target);
-        itemIndex = parseInt(itemEl.attr("data-index"));
-        parent = _this.getParent();
-        hasChildren = (((_ref = parent.children[itemIndex]) != null ? _ref.children : void 0) != null) || itemEl.attr("data-path");
-        if (itemEl.hasClass("active")) {
-          path = itemEl.attr("data-path");
-          _this.selectedItems.find(".FlowerPot").forEach(function(item) {
-            var ipath, subEl;
-
-            subEl = dom(item);
-            ipath = subEl.attr("data-path");
-            if (!ipath || ipath.length > path.length) {
-              return subEl.remove();
-            }
-          });
-          _this.setPath((function() {
-            var _i, _len, _ref1, _results;
-
-            _ref1 = path.split(":");
-            _results = [];
-            for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-              index = _ref1[_i];
-              _results.push(parseInt(index));
-            }
-            return _results;
-          })());
-          return _this.emit("opened", _this.getParent());
-        } else if (hasChildren && itemEl.hasClass("selected")) {
-          _this.path.push(itemIndex);
-          itemEl.removeClass("inactive").removeClass("selected").addClass("active").attr("data-path", _this.path.join(":")).appendTo(_this.selectedItems);
-          _this.renderChildren();
-          return _this.emit("opened", _this.getParent());
-        } else if (!itemEl.hasClass("selected")) {
-          _this.el.find(".selected").removeClass("selected");
-          itemEl.addClass("selected");
-          return _this.emit("selected", itemEl, parent.children[itemIndex]);
-        }
+        return _this._handleClick(event.target);
       });
     }
+
+    FlowerPots.prototype._handleClick = function(el) {
+      var hasChildren, index, itemEl, itemIndex, parent, path, _ref;
+
+      itemEl = dom(el);
+      itemIndex = parseInt(itemEl.attr("data-index"));
+      parent = this.getParent();
+      hasChildren = (((_ref = parent.children[itemIndex]) != null ? _ref.children : void 0) != null) || itemEl.attr("data-path");
+      if (itemEl.hasClass("active")) {
+        path = itemEl.attr("data-path");
+        this.selectedItems.find(".FlowerPot").forEach(function(item) {
+          var ipath, subEl;
+
+          subEl = dom(item);
+          ipath = subEl.attr("data-path");
+          if (!ipath || ipath.length > path.length) {
+            return subEl.remove();
+          }
+        });
+        this.setPath((function() {
+          var _i, _len, _ref1, _results;
+
+          _ref1 = path.split(":");
+          _results = [];
+          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+            index = _ref1[_i];
+            _results.push(parseInt(index));
+          }
+          return _results;
+        })());
+        return this.emit("opened", this.getParent());
+      } else if (hasChildren && itemEl.hasClass("selected")) {
+        this.path.push(itemIndex);
+        itemEl.removeClass("inactive").removeClass("selected").addClass("active").attr("data-path", this.path.join(":")).appendTo(this.selectedItems);
+        this.renderChildren();
+        return this.emit("opened", this.getParent());
+      } else if (!itemEl.hasClass("selected")) {
+        this.el.find(".selected").removeClass("selected");
+        itemEl.addClass("selected");
+        return this.emit("selected", itemEl, parent.children[itemIndex]);
+      }
+    };
 
     FlowerPots.prototype.setRootLabel = function(rootLabel) {
       this.rootLabel = rootLabel;

@@ -571,6 +571,7 @@ ul.icons li [class*=" icon-"] {
 }
 .FlowerPotContainer .FlowerPot.inactive {
   padding-left: 15px;
+  border-bottom: 1px solid #e6e6e6;
 }
 .FlowerPotContainer .FlowerPot.inactive:hover {
   background-color: #aec9e5;
