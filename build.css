@@ -538,6 +538,7 @@ ul.icons li [class*=" icon-"] {
 .icon-folder-open-alt:before      { content: "\f115"; }
 .FlowerPotContainer {
   padding: 5px;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
