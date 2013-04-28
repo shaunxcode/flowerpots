@@ -76,7 +76,7 @@ class FlowerPots
 					.attr("data-index", index)
 					.text(item.name) 
 
-				child.append dom("<i />").text ">"
+				child.append dom("<i />").addClass "icon-list-ul"
 		
 		@emit "rendered"
 
