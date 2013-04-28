@@ -15,38 +15,41 @@ class FlowerPots
 			@setPath [0]
 			@emit "opened", @getParent()
 
-		@el.on "click", ".FlowerPot", (event) =>
-			console.log event
-			itemEl = dom event.target
-			itemIndex = parseInt itemEl.attr "data-index"
-			parent = @getParent()
-			hasChildren = parent.children[itemIndex]?.children? or itemEl.attr("data-path")
+		@el.on "click", ".FlowerPot > i", (event) => @_handleClick event.target.parentNode
 
-			if itemEl.hasClass "active"
-				path = itemEl.attr "data-path"
-				@selectedItems.find(".FlowerPot").forEach (item) ->
-					subEl = dom item 
-					ipath = subEl.attr "data-path" 
-					if not ipath or ipath.length > path.length 
-						subEl.remove()
+		@el.on "click", ".FlowerPot", (event) => @_handleClick event.target
 
-				@setPath (parseInt index for index in path.split ":")
-				@emit "opened", @getParent()
-			else if hasChildren and itemEl.hasClass "selected"
-				@path.push itemIndex
-				itemEl
-					.removeClass("inactive")
-					.removeClass("selected")
-					.addClass("active")
-					.attr("data-path", @path.join ":")
-					.appendTo @selectedItems 
+	_handleClick: (el) -> 
+		itemEl = dom el 
+		itemIndex = parseInt itemEl.attr "data-index"
+		parent = @getParent()
+		hasChildren = parent.children[itemIndex]?.children? or itemEl.attr("data-path")
 
-				@renderChildren()
-				@emit "opened", @getParent()
-			else if not itemEl.hasClass "selected"
-				@el.find(".selected").removeClass "selected"
-				itemEl.addClass "selected"
-				@emit "selected", itemEl, parent.children[itemIndex]
+		if itemEl.hasClass "active"
+			path = itemEl.attr "data-path"
+			@selectedItems.find(".FlowerPot").forEach (item) ->
+				subEl = dom item 
+				ipath = subEl.attr "data-path" 
+				if not ipath or ipath.length > path.length 
+					subEl.remove()
+
+			@setPath (parseInt index for index in path.split ":")
+			@emit "opened", @getParent()
+		else if hasChildren and itemEl.hasClass "selected"
+			@path.push itemIndex
+			itemEl
+				.removeClass("inactive")
+				.removeClass("selected")
+				.addClass("active")
+				.attr("data-path", @path.join ":")
+				.appendTo @selectedItems 
+
+			@renderChildren()
+			@emit "opened", @getParent()
+		else if not itemEl.hasClass "selected"
+			@el.find(".selected").removeClass "selected"
+			itemEl.addClass "selected"
+			@emit "selected", itemEl, parent.children[itemIndex]
 
 	setRootLabel: (@rootLabel) -> 
 		@topPot.text @rootLabel
