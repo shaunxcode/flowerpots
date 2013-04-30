@@ -1672,8 +1672,12 @@ require.register("flowerpots/index.js", function(exports, require, module){
       this.path = [];
       this.el = dom("<div/>").addClass("FlowerPotContainer");
       this.topPot = dom("<div />").addClass("TopPot").appendTo(this.el);
-      this.selectedItems = dom("<div />").addClass("SelectedItems").appendTo(this.el);
-      this.childrenItems = dom("<div />").addClass("ChildrenItems").appendTo(this.el);
+      this.itemContainer = dom("<div />").addClass("Items").appendTo(this.el);
+      this.selectedItems = dom("<div />").addClass("SelectedItems").appendTo(this.itemContainer);
+      this.childrenItems = dom("<div />").addClass("ChildrenItems").appendTo(this.itemContainer);
+      this.renderItem = function(item) {
+        return item.name;
+      };
       this.topPot.on("click", function(event) {
         _this.selectedItems.empty();
         _this.setPath([0]);
@@ -1729,6 +1733,10 @@ require.register("flowerpots/index.js", function(exports, require, module){
       }
     };
 
+    FlowerPots.prototype.setRenderItem = function(renderItem) {
+      this.renderItem = renderItem;
+    };
+
     FlowerPots.prototype.setRootLabel = function(rootLabel) {
       this.rootLabel = rootLabel;
       this.topPot.text(this.rootLabel);
@@ -1776,7 +1784,8 @@ require.register("flowerpots/index.js", function(exports, require, module){
         _ref = parent.children;
         for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
           item = _ref[index];
-          this.childrenItems.append(child = dom("<div/>").addClass("FlowerPot").addClass("inactive").addClass(item.children ? "HasChildren" : "NoChildren").attr("data-index", index).text(item.name));
+          this.childrenItems.append(child = dom("<div/>").addClass("FlowerPot").addClass("inactive").addClass(item.children ? "HasChildren" : "NoChildren").attr("data-index", index));
+          child.html(this.renderItem(item));
           child.append(dom("<i />").addClass("icon-list-ul"));
         }
       }
