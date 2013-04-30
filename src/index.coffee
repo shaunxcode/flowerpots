@@ -7,8 +7,11 @@ class FlowerPots
 		@path = []
 		@el = dom("<div/>").addClass "FlowerPotContainer"
 		@topPot = dom("<div />").addClass("TopPot").appendTo @el
-		@selectedItems = dom("<div />").addClass("SelectedItems").appendTo @el 
-		@childrenItems = dom("<div />").addClass("ChildrenItems").appendTo @el 
+		@itemContainer = dom("<div />").addClass("Items").appendTo @el
+		@selectedItems = dom("<div />").addClass("SelectedItems").appendTo @itemContainer
+		@childrenItems = dom("<div />").addClass("ChildrenItems").appendTo @itemContainer
+
+		@renderItem = (item) -> item.name 
 
 		@topPot.on "click", (event) => 
 			@selectedItems.empty()
@@ -51,6 +54,8 @@ class FlowerPots
 			itemEl.addClass "selected"
 			@emit "selected", itemEl, parent.children[itemIndex]
 
+	setRenderItem: (@renderItem) -> 
+	
 	setRootLabel: (@rootLabel) -> 
 		@topPot.text @rootLabel
 		this
@@ -82,8 +87,8 @@ class FlowerPots
 					.addClass("inactive")
 					.addClass(if item.children then "HasChildren" else "NoChildren")
 					.attr("data-index", index)
-					.text(item.name) 
 
+				child.html @renderItem item
 				child.append dom("<i />").addClass "icon-list-ul"
 		
 		@emit "rendered"
