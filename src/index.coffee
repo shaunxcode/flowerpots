@@ -18,7 +18,7 @@ class FlowerPots
 			@setPath [0]
 			@emit "opened", @getParent()
 
-		@el.on "click", ".FlowerPot > i", (event) => @_handleClick event.target.parentNode
+		@el.on "click", ".FlowerPot > i, .FlowerPot > div", (event) => @_handleClick event.target.parentNode
 
 		@el.on "click", ".FlowerPot", (event) => @_handleClick event.target
 

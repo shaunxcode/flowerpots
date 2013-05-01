@@ -1683,7 +1683,7 @@ require.register("flowerpots/index.js", function(exports, require, module){
         _this.setPath([0]);
         return _this.emit("opened", _this.getParent());
       });
-      this.el.on("click", ".FlowerPot > i", function(event) {
+      this.el.on("click", ".FlowerPot > i, .FlowerPot > div", function(event) {
         return _this._handleClick(event.target.parentNode);
       });
       this.el.on("click", ".FlowerPot", function(event) {
