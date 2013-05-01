@@ -1,0 +1,54 @@
+.FlowerPotContainer {
+  padding: 5px;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.FlowerPotContainer .TopPot {
+  background: #e7e7e7;
+  padding: 6px;
+  cursor: pointer;
+  margin-bottom: 4px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+}
+.FlowerPotContainer .FlowerPot {
+  padding: 6px;
+  cursor: pointer;
+  position: relative;
+}
+.FlowerPotContainer .FlowerPot.active {
+  color: #969696;
+  text-shadow: 0px 1px 1px #ffffff;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+  margin: 0px 0px 4px 0px;
+  background-color: #f7f7f7;
+}
+.FlowerPotContainer .FlowerPot.selected {
+  background: #5a92d3;
+  color: white;
+}
+.FlowerPotContainer .FlowerPot.inactive {
+  padding-left: 15px;
+  border-bottom: 1px solid #e6e6e6;
+}
+.FlowerPotContainer .FlowerPot.inactive:hover {
+  background-color: #aec9e5;
+}
+.FlowerPotContainer .FlowerPot i {
+  display: none;
+}
+.FlowerPotContainer .FlowerPot.selected.HasChildren i {
+  display: block;
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  right: 6px;
+  top: 6px;
+}
+.FlowerPotContainer .ChildrenItems {
+  border-left: 3px solid #e6e6e6;
+}
