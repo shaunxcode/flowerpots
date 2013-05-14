@@ -503,7 +503,6 @@ function match(el, selector) {
 
 });
 require.register("component-delegate/index.js", function(exports, require, module){
-
 /**
  * Module dependencies.
  */
@@ -527,7 +526,7 @@ var matches = require('matches-selector')
 
 exports.bind = function(el, selector, type, fn, capture){
   return event.bind(el, type, function(e){
-    if (matches(e.target, selector)) fn.call(el, e);
+    if (matches(e.target || e.srcElement, selector)) fn.call(el, e);
   }, capture);
 };
 
@@ -1782,6 +1781,7 @@ require.register("flowerpots/index.js", function(exports, require, module){
           this.childrenItems.append(child = dom("<div/>").addClass("FlowerPot").addClass("inactive").addClass(item.children ? "HasChildren" : "NoChildren").attr("data-index", index));
           child.html(this.renderItem(item));
           child.append(dom("<i />").addClass("icon-list-ul"));
+          this.emit("renderedChildElement", child, item);
         }
       }
       return this.emit("rendered");

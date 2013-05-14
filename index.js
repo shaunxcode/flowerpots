@@ -123,6 +123,7 @@
           this.childrenItems.append(child = dom("<div/>").addClass("FlowerPot").addClass("inactive").addClass(item.children ? "HasChildren" : "NoChildren").attr("data-index", index));
           child.html(this.renderItem(item));
           child.append(dom("<i />").addClass("icon-list-ul"));
+          this.emit("renderedChildElement", child, item);
         }
       }
       return this.emit("rendered");

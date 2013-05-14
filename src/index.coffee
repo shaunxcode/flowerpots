@@ -90,7 +90,8 @@ class FlowerPots
 
 				child.html @renderItem item
 				child.append dom("<i />").addClass "icon-list-ul"
-		
+				@emit "renderedChildElement", child, item
+	
 		@emit "rendered"
 
 Emitter FlowerPots::
